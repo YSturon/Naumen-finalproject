@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${mode == 'create' ? 'Новый тест' : 'Редактирование теста'}">Тест</title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main class="container narrow">
+    <a class="back-link" th:href="@{/admin/tests}">← К тестам</a>
+    <section class="panel">
+        <h1 th:text="${mode == 'create' ? 'Новый тест' : 'Редактирование теста'}"></h1>
+        <form class="form"
+              th:action="${mode == 'create'} ? @{/admin/tests} : @{/admin/tests/{id}(id=${test.id})}"
+              th:object="${testForm}"
+              method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <label>
+                Название
+                <input th:field="*{title}" type="text" required>
+                <span class="field-error" th:errors="*{title}"></span>
+            </label>
+            <label>
+                Тема
+                <select th:field="*{topicId}" required>
+                    <option value="">Выберите тему</option>
+                    <option th:each="topic : ${topics}" th:value="${topic.id}" th:text="${topic.name}"></option>
+                </select>
+                <span class="field-error" th:errors="*{topicId}"></span>
+            </label>
+            <label>
+                Описание
+                <textarea th:field="*{description}" rows="5"></textarea>
+                <span class="field-error" th:errors="*{description}"></span>
+            </label>
+            <div class="form-grid">
+                <label>
+                    Время, минут
+                    <input th:field="*{timeLimitMinutes}" type="number" min="1" max="240" required>
+                    <span class="field-error" th:errors="*{timeLimitMinutes}"></span>
+                </label>
+                <label>
+                    Проходной процент
+                    <input th:field="*{passingScorePercent}" type="number" min="1" max="100" required>
+                    <span class="field-error" th:errors="*{passingScorePercent}"></span>
+                </label>
+            </div>
+            <label class="check-row">
+                <input th:field="*{published}" type="checkbox">
+                <span>Опубликован</span>
+            </label>
+            <button class="primary" type="submit">Сохранить</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

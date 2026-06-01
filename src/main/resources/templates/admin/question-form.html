@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${mode == 'create' ? 'Новый вопрос' : 'Редактирование вопроса'}">Вопрос</title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main class="container narrow">
+    <a class="back-link" th:href="@{/admin/tests/{id}/questions(id=${test.id})}">← К вопросам</a>
+    <section class="panel">
+        <p class="eyebrow" th:text="${test.title}"></p>
+        <h1 th:text="${mode == 'create' ? 'Новый вопрос' : 'Редактирование вопроса'}"></h1>
+        <form class="form"
+              th:action="${mode == 'create'} ? @{/admin/tests/{id}/questions(id=${test.id})} : @{/admin/questions/{id}(id=${question.id})}"
+              th:object="${questionForm}"
+              method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <div class="notice error" th:if="${#fields.hasGlobalErrors()}">
+                <p th:each="err : ${#fields.globalErrors()}" th:text="${err}"></p>
+            </div>
+            <label>
+                Текст вопроса
+                <textarea th:field="*{text}" rows="5" required></textarea>
+                <span class="field-error" th:errors="*{text}"></span>
+            </label>
+            <div class="form-grid">
+                <label>
+                    Тип вопроса
+                    <select th:field="*{type}">
+                        <option th:each="type : ${questionTypes}" th:value="${type}" th:text="${type.displayName}"></option>
+                    </select>
+                    <span class="field-error" th:errors="*{type}"></span>
+                </label>
+                <label>
+                    Баллы
+                    <input th:field="*{points}" type="number" min="1" required>
+                    <span class="field-error" th:errors="*{points}"></span>
+                </label>
+            </div>
+
+            <div class="options-editor">
+                <div class="option-editor-row" th:each="optionText, stat : ${optionTexts}">
+                    <input type="checkbox"
+                           name="correctIndexes"
+                           th:value="${stat.index}"
+                           th:checked="${correctIndexes.contains(stat.index)}"
+                           aria-label="Правильный вариант">
+                    <input type="text" name="optionTexts" th:value="${optionText}" placeholder="Вариант ответа">
+                </div>
+            </div>
+
+            <button class="primary" type="submit">Сохранить</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

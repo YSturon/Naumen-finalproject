@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${test.title}">Тест</title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main class="container narrow">
+    <a class="back-link" th:href="@{/tests}">← К списку тестов</a>
+    <section class="panel">
+        <p class="eyebrow" th:text="${test.topic.name}"></p>
+        <h1 th:text="${test.title}"></h1>
+        <p th:text="${test.description}"></p>
+        <dl class="meta-grid">
+            <div>
+                <dt>Количество вопросов</dt>
+                <dd th:text="${test.questionCount}"></dd>
+            </div>
+            <div>
+                <dt>Ограничение времени</dt>
+                <dd th:text="${test.timeLimitMinutes + ' мин'}"></dd>
+            </div>
+            <div>
+                <dt>Проходной результат</dt>
+                <dd th:text="${test.passingScorePercent + '%'}"></dd>
+            </div>
+        </dl>
+        <form th:action="@{/tests/{id}/start(id=${test.id})}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <button class="primary" type="submit" th:disabled="${test.questionCount == 0}">Начать тест</button>
+        </form>
+    </section>
+</main>
+</body>
+</html>

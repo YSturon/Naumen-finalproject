@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Регистрация</title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main class="auth-shell">
+    <section class="auth-panel">
+        <h1>Регистрация</h1>
+        <form class="form" th:action="@{/register}" th:object="${registrationForm}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <label>
+                Логин
+                <input th:field="*{username}" type="text" autocomplete="username" required>
+                <span class="field-error" th:errors="*{username}"></span>
+            </label>
+            <label>
+                ФИО
+                <input th:field="*{fullName}" type="text" autocomplete="name" required>
+                <span class="field-error" th:errors="*{fullName}"></span>
+            </label>
+            <label>
+                Пароль
+                <input th:field="*{password}" type="password" autocomplete="new-password" required>
+                <span class="field-error" th:errors="*{password}"></span>
+            </label>
+            <button class="primary" type="submit">Создать аккаунт</button>
+        </form>
+        <p class="muted">Уже есть учетная запись? <a th:href="@{/login}">Войти</a></p>
+    </section>
+</main>
+</body>
+</html>

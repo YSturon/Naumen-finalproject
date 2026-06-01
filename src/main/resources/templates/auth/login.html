@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Вход</title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main class="auth-shell">
+    <section class="auth-panel">
+        <h1>Вход</h1>
+        <p class="notice success" th:if="${param.registered}">Регистрация завершена. Войдите в систему.</p>
+        <p class="notice error" th:if="${param.error}">Неверный логин или пароль.</p>
+        <p class="notice" th:if="${param.logout}">Вы вышли из системы.</p>
+        <form class="form" th:action="@{/login}" method="post">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+            <label>
+                Логин
+                <input name="username" type="text" autocomplete="username" required autofocus>
+            </label>
+            <label>
+                Пароль
+                <input name="password" type="password" autocomplete="current-password" required>
+            </label>
+            <button class="primary" type="submit">Войти</button>
+        </form>
+        <p class="muted">Нет учетной записи? <a th:href="@{/register}">Зарегистрироваться</a></p>
+    </section>
+</main>
+</body>
+</html>

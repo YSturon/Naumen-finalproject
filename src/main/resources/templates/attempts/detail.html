@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Детали попытки</title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main class="container narrow">
+    <section class="panel">
+        <p class="eyebrow" th:text="${attempt.test.topic.name}"></p>
+        <h1 th:text="${attempt.test.title}"></h1>
+        <dl class="meta-grid">
+            <div>
+                <dt>Пользователь</dt>
+                <dd th:text="${attempt.user.fullName}"></dd>
+            </div>
+            <div>
+                <dt>Результат</dt>
+                <dd th:text="${attempt.percent + '%'}"></dd>
+            </div>
+            <div>
+                <dt>Оценка</dt>
+                <dd th:text="${attempt.grade}"></dd>
+            </div>
+        </dl>
+    </section>
+
+    <section class="answer-review" th:each="answer, stat : ${attempt.answers}">
+        <div class="question-head">
+            <span th:text="${'Вопрос ' + (stat.index + 1)}"></span>
+            <span class="status" th:classappend="${answer.correct} ? ' status-ok' : ' status-bad'"
+                  th:text="${answer.correct ? 'Верно' : 'Неверно'}"></span>
+        </div>
+        <h2 th:text="${answer.question.text}"></h2>
+        <p class="muted" th:if="${answer.selectedOptions.isEmpty()}">Ответ не выбран.</p>
+        <ul class="plain-list" th:if="${!answer.selectedOptions.isEmpty()}">
+            <li th:each="option : ${answer.selectedOptions}" th:text="${option.text}"></li>
+        </ul>
+    </section>
+</main>
+</body>
+</html>

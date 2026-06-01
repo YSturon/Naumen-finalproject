@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Результат</title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main class="container narrow">
+    <section class="result-panel">
+        <p class="eyebrow" th:text="${attempt.test.title}"></p>
+        <h1 th:text="${attempt.passed ? 'Тест пройден' : 'Тест не пройден'}"></h1>
+        <div class="score-ring" th:text="${attempt.percent + '%'}"></div>
+        <dl class="meta-grid">
+            <div>
+                <dt>Правильных ответов</dt>
+                <dd th:text="${attempt.correctAnswers + ' / ' + attempt.totalQuestions}"></dd>
+            </div>
+            <div>
+                <dt>Баллы</dt>
+                <dd th:text="${attempt.score + ' / ' + attempt.maxScore}"></dd>
+            </div>
+            <div>
+                <dt>Оценка</dt>
+                <dd th:text="${attempt.grade}"></dd>
+            </div>
+        </dl>
+        <div class="button-row">
+            <a class="primary" th:href="@{/history/{id}(id=${attempt.id})}">Детали попытки</a>
+            <a class="secondary" th:href="@{/tests}">К тестам</a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

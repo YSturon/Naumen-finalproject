@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Результаты пользователей</title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main class="container">
+    <div class="page-heading">
+        <h1>Результаты пользователей</h1>
+    </div>
+    <p class="notice" th:if="${attempts.isEmpty()}">Завершенных попыток пока нет.</p>
+    <div class="table-wrap" th:if="${!attempts.isEmpty()}">
+        <table>
+            <thead>
+            <tr>
+                <th>Пользователь</th>
+                <th>Тест</th>
+                <th>Дата</th>
+                <th>Баллы</th>
+                <th>Процент</th>
+                <th>Оценка</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="attempt : ${attempts}">
+                <td th:text="${attempt.user.fullName}"></td>
+                <td th:text="${attempt.test.title}"></td>
+                <td th:text="${#temporals.format(attempt.finishedAt, 'dd.MM.yyyy HH:mm')}"></td>
+                <td th:text="${attempt.score + ' / ' + attempt.maxScore}"></td>
+                <td th:text="${attempt.percent + '%'}"></td>
+                <td th:text="${attempt.grade}"></td>
+                <td><a th:href="@{/admin/results/{id}(id=${attempt.id})}">Открыть</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>

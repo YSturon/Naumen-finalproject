@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${attempt.test.title}">Прохождение теста</title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main>
+    <p th:text="${attempt.test.topic.name}"></p>
+    <h1 th:text="${attempt.test.title}"></h1>
+    <p th:text="${'Осталось секунд: ' + secondsRemaining}"></p>
+
+    <form th:action="@{/attempts/{id}/submit(id=${attempt.id})}" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+        <fieldset th:each="question, stat : ${questions}">
+            <legend th:text="${'Вопрос ' + (stat.index + 1) + ' из ' + questions.size() + ', баллы: ' + question.points}"></legend>
+            <h2 th:text="${question.text}"></h2>
+            <p th:text="${question.type.displayName}"></p>
+
+            <div th:each="option : ${question.options}">
+                <label>
+                    <input th:if="${question.type.name() == 'SINGLE_CHOICE'}"
+                           type="radio"
+                           th:name="'answers[' + ${question.id} + ']'"
+                           th:value="${option.id}">
+                    <input th:if="${question.type.name() == 'MULTIPLE_CHOICE'}"
+                           type="checkbox"
+                           th:name="'answers[' + ${question.id} + ']'"
+                           th:value="${option.id}">
+                    <span th:text="${option.text}"></span>
+                </label>
+            </div>
+        </fieldset>
+
+        <p>
+            <button type="submit">Завершить тест</button>
+        </p>
+    </form>
+</main>
+</body>
+</html>

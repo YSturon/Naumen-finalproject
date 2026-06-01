@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Администрирование</title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main class="container">
+    <div class="page-heading">
+        <h1>Администрирование</h1>
+    </div>
+
+    <section class="stats-grid">
+        <a class="stat-tile" th:href="@{/admin/topics}">
+            <span>Темы</span>
+            <strong th:text="${topicsCount}"></strong>
+        </a>
+        <a class="stat-tile" th:href="@{/admin/tests}">
+            <span>Тесты</span>
+            <strong th:text="${testsCount}"></strong>
+        </a>
+        <a class="stat-tile" th:href="@{/admin/tests}">
+            <span>Опубликовано</span>
+            <strong th:text="${publishedTestsCount}"></strong>
+        </a>
+        <a class="stat-tile" th:href="@{/admin/users}">
+            <span>Пользователи</span>
+            <strong th:text="${usersCount}"></strong>
+        </a>
+        <a class="stat-tile" th:href="@{/admin/results}">
+            <span>Попытки</span>
+            <strong th:text="${attemptsCount}"></strong>
+        </a>
+    </section>
+
+    <section class="admin-links">
+        <a th:href="@{/admin/topics}">Темы</a>
+        <a th:href="@{/admin/tests}">Тесты</a>
+        <a th:href="@{/admin/users}">Пользователи</a>
+        <a th:href="@{/admin/results}">Результаты</a>
+        <a th:href="@{/admin/statistics}">Статистика</a>
+    </section>
+</main>
+</body>
+</html>

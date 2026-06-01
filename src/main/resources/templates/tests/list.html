@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Доступные тесты</title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main class="container">
+    <div class="page-heading">
+        <div>
+            <h1>Доступные тесты</h1>
+            <p class="muted">Выберите тему и начните прохождение.</p>
+        </div>
+        <form class="filter" th:action="@{/tests}" method="get">
+            <select name="topic">
+                <option value="">Все темы</option>
+                <option th:each="topic : ${topics}"
+                        th:value="${topic.id}"
+                        th:selected="${selectedTopicId != null and selectedTopicId == topic.id}"
+                        th:text="${topic.name}"></option>
+            </select>
+            <button type="submit">Фильтровать</button>
+        </form>
+    </div>
+
+    <p class="notice" th:if="${tests.isEmpty()}">Опубликованные тесты не найдены.</p>
+
+    <div class="test-grid">
+        <article class="test-card" th:each="test : ${tests}">
+            <div>
+                <p class="eyebrow" th:text="${test.topic.name}"></p>
+                <h2 th:text="${test.title}"></h2>
+                <p th:text="${test.description}"></p>
+            </div>
+            <dl class="meta-grid">
+                <div>
+                    <dt>Вопросов</dt>
+                    <dd th:text="${test.questionCount}"></dd>
+                </div>
+                <div>
+                    <dt>Время</dt>
+                    <dd th:text="${test.timeLimitMinutes + ' мин'}"></dd>
+                </div>
+                <div>
+                    <dt>Зачет</dt>
+                    <dd th:text="${test.passingScorePercent + '%'}"></dd>
+                </div>
+            </dl>
+            <a class="primary" th:href="@{/tests/{id}(id=${test.id})}">Открыть</a>
+        </article>
+    </div>
+</main>
+</body>
+</html>

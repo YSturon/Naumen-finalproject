@@ -1,0 +1,23 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: knowledge-testing-system
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/knowledge_testing}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:postgres}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+  thymeleaf:
+    cache: false
+
+app:
+  seed-demo-data: ${SEED_DEMO_DATA:true}

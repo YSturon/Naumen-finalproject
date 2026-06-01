@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Темы</title>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<main class="container">
+    <div class="page-heading">
+        <h1>Темы</h1>
+        <a class="primary" th:href="@{/admin/topics/new}">Создать тему</a>
+    </div>
+    <p class="notice error" th:if="${error}" th:text="${error}"></p>
+    <div class="table-wrap">
+        <table>
+            <thead>
+            <tr>
+                <th>Название</th>
+                <th>Описание</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="topic : ${topics}">
+                <td th:text="${topic.name}"></td>
+                <td th:text="${topic.description}"></td>
+                <td class="actions">
+                    <a th:href="@{/admin/topics/{id}/edit(id=${topic.id})}">Изменить</a>
+                    <form th:action="@{/admin/topics/{id}/delete(id=${topic.id})}" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                        <button class="danger-link" type="submit">Удалить</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</main>
+</body>
+</html>
