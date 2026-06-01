@@ -536,13 +536,13 @@ public class AdminController {
     }
 
     /**
-     * Загружает тест по идентификатору вместе с темой и вопросами.
+     * Загружает тест по идентификатору вместе с темой.
      *
      * @param id идентификатор теста
      * @return найденный тест
      */
     private KnowledgeTest getTest(Long id) {
-        return testRepository.findWithTopicAndQuestionsById(id)
+        return testRepository.findWithTopicById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Тест не найден"));
     }
 

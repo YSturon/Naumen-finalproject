@@ -2,6 +2,7 @@ package ru.sturov.testing.repository;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.sturov.testing.domain.KnowledgeTest;
@@ -73,6 +74,15 @@ public interface KnowledgeTestRepository extends JpaRepository<KnowledgeTest, Lo
             where t.id = :id
             """)
     Optional<KnowledgeTest> findWithTopicAndQuestionsById(Long id);
+
+    /**
+     * Ищет тест по идентификатору вместе с темой без загрузки коллекции вопросов.
+     *
+     * @param id идентификатор теста
+     * @return найденный тест или пустой результат
+     */
+    @EntityGraph(attributePaths = "topic")
+    Optional<KnowledgeTest> findWithTopicById(Long id);
 
     /**
      * Считает количество опубликованных тестов.
